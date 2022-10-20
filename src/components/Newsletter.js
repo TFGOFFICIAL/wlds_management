@@ -1,13 +1,13 @@
-import React from 'react';
-import Contact from './Contact';
-import Nav from './Nav';
+import React from 'react'
+import Nav from './Nav'
+import Notifie from './Notifie'
 
-export default function Dashboard() {
+export default function Newsletter() {
   return (
     <div className='flex flex-col w-full'>
       <Nav />
       <div className='flex flex-col lg:items-center'>
-          <Contact />
+        <Notifie />
       </div>
     </div>
   )
