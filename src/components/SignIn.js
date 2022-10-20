@@ -26,10 +26,10 @@ export default function SignIn() {
         <div className='w-[98vw] lg:w-[400px] bg-white/95 rounded-2xl border shadow-xl flex flex-col items-center'>
             <div className='title my-20'>Sign In</div>
             <div className='w-[95%] flex flex-col items-center gap-5'>
-                <input className='border p-1 w-full' onChange={(e) => {setEmail(e.target.value);}} type='email' placeholder='Email ...' />
-                <input className='border p-1 w-full' onChange={(e) => {setPassword(e.target.value);}} type='password' placeholder='Password ...' />
+                <input className='border p-2 rounded-2xl w-full' onChange={(e) => {setEmail(e.target.value);}} type='email' placeholder='Your email ...' />
+                <input className='border p-2 rounded-2xl w-full' onChange={(e) => {setPassword(e.target.value);}} type='password' placeholder='Your password ...' />
             </div>
-            <button className='subtitle font-bold text-white w-[95%] bg-gradient-to-r from-purple-900 to-red-800 my-10 py-2 rounded-xl' onClick={handleSignin}>Sign In</button>
+            <button className='subtitle font-bold text-white w-[95%] bg-gradient-to-r from-violet-800 to-red-700 my-10 py-2 rounded-xl' onClick={handleSignin}>Sign In</button>
         </div>
     </div>
   )
