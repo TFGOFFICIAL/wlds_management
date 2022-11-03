@@ -8,7 +8,7 @@ import Newsletter from './components/Newsletter'
 
 export default function App() {
   return (
-    <div className='h-full'>
+    <div className='h-full font-roboto'>
       <Router>
         <AuthContextProvider>
           <Routes>

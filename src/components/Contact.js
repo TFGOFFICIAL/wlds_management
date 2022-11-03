@@ -25,13 +25,16 @@ export default function Contact() {
     <div className='flex flex-col'>
         {contacts.length > 0 ? contacts.map((c, i) => {
             return (
-                <div key={i} className='flex flex-col my-10 items-center lg:w-[400px] bg-white shadow-xl rounded-xl px-5'>
-                    <div className='my-5 ml-5 flex flex-row w-full justify-start text-[0.6rem]'>{c.id}</div>
-                    <div className='mb-5'>{c.firstname } {c.lastname}</div>
-                    <div className='mb-5'>{c.email}</div>
+                <div key={i} className='flex flex-col my-10 items-center lg:w-[1100px] bg-white shadow-xl rounded-xl px-5'>
+                    <div className='my-5 ml-5 flex flex-row w-full justify-start text-[0.6rem]'>id case: {c.id}</div>
+                    <div className='my-10 title'>{c.firstname } {c.lastname}</div>
+                    <div className='font-semibold text-[1.2rem] w-full'>Email:</div>
+                    <div className='mb-5 w-full'>{c.email}</div>
+                    <div className='font-semibold text-[1.2rem] w-full'>Message:</div>
+                    <div className='w-full mb-5'>{c.message}</div>
                     <div className='flex flex-row w-full justify-end'>
-                        <button onClick={() => {handleDelete(c.id);}} className='mr-5 mb-5 p-2 bg-gradient-to-r from-red-800 to-red-600 rounded-full'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <button onClick={() => {handleDelete(c.id);}} className='mb-5 p-2 bg-gradient-to-r from-red-800 to-red-600 rounded-full'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                             </svg>
                         </button>

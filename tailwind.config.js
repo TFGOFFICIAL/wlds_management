@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       primary: 'Saira',
+      roboto: ['Roboto', 'sans-serif'],
     },
     container: {
       padding: {
