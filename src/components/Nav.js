@@ -7,8 +7,10 @@ import logo from './../assets/icons/LOGO_WHITE.png'
 import pdp from './../assets/images/fde_one-piece_2.jpg'
 
 const navigation = [
-  { name: 'CONTACT', href: '/dashboard', current: true },
-  { name: 'NEWSLETTER', href: '/newsletter', current: false }
+  { name: 'CONTACT', href: '/dashboard/contact', current: true },
+  { name: 'EN COURS', href: '/dashboard/encours', current: false },
+  { name: 'TRAITÉ', href: '/dashboard/traite', current: false },
+  { name: 'NEWSLETTER', href: '/newsletter', current: false },
 ]
 
 function classNames(...classes) {
@@ -19,10 +21,13 @@ export default function Nav() {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
   
-    const changeRoute = (item, i) => {
-      navigation[i].current = !navigation[i].current;
-      if(i === 0) navigation[i + 1].current = !navigation[i + 1].current;
-      if(i === 1) navigation[i - 1].current = !navigation[i - 1].current;
+    const changeRoute = (item, id) => {
+      navigation[id].current = true;
+      for(let i = 0; i < navigation.length; i++){
+        if(i !== id){
+            navigation[i].current = false;
+        }
+      }
       navigate(item.href);
     }
   
@@ -104,15 +109,15 @@ export default function Nav() {
                     leaveTo="transform opacity-0 scale-95"
                 >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">                        
-                    <Menu.Item>
-                        {({ active }) => (
-                        <a
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                        >
-                            <button onClick={handleLogout}>Logout</button>
-                        </a>
-                        )}
-                    </Menu.Item>
+                        <Menu.Item>
+                            {({ active }) => (
+                            <div
+                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            >
+                                <button onClick={handleLogout}>Logout</button>
+                            </div>
+                            )}
+                        </Menu.Item>
                     </Menu.Items>
                 </Transition>
                 </Menu>

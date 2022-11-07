@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { db } from './../firebase'
 import { collection, query, onSnapshot, deleteDoc, doc, where, updateDoc } from 'firebase/firestore'
 
-export default function Contact() {
+export default function EnCours() {
   const [contacts, setContacts] = useState([]);
 
   const updateUp = async (id) => {
     const docRef = doc(db, "contact", id);
     await updateDoc(docRef, {
-        treated: 1
+        treated: 2
+      });
+  }
+
+  const updateDown = async (id) => {
+    const docRef = doc(db, "contact", id);
+    await updateDoc(docRef, {
+        treated: 0
       });
   }
 
@@ -19,7 +26,7 @@ export default function Contact() {
   }
 
   useEffect(() => {
-    const q = query(collection(db, 'contact'), where("treated", "==", 0));
+    const q = query(collection(db, 'contact'), where("treated", "==", 1));
     onSnapshot(q, (querySnapshot) => {
         const datas = []
         querySnapshot.forEach((doc) => {
@@ -36,8 +43,8 @@ export default function Contact() {
                     <div className='my-5 mx-5 flex flex-row w-full justify-between text-[0.6rem]'>
                         <div>id case: {c.id}</div>
                         <div className='flex flex-row gap-2'>
-                            <button disabled={true} className='border-2 border-gray-300 p-1 rounded-lg hover:shadow-lg'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                            <button onClick={() => {updateDown(c.id);}} disabled={false} className='border-2 border-black p-1 rounded-lg hover:shadow-lg'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
                                     <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
                                 </svg>
@@ -66,7 +73,7 @@ export default function Contact() {
             )
         })
         :
-        <div className='mt-20 title text-gray-500'>Aucune personne ne vous a contacté.</div>}
+        <div className='mt-20 title text-gray-500'>Aucune demande est en cours de traitement.</div>}
     </div>
   )
 }

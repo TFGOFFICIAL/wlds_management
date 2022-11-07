@@ -13,7 +13,7 @@ export default function App() {
         <AuthContextProvider>
           <Routes>
             <Route path='/' element={ <SignIn/> } />
-            <Route path='/dashboard' element={ <ProtectedRoute><Dashboard/></ProtectedRoute> } />
+            <Route path='/dashboard/:page' element={ <ProtectedRoute><Dashboard/></ProtectedRoute> } />
             <Route path='/newsletter' element={ <ProtectedRoute><Newsletter/></ProtectedRoute> } />
           </Routes>
         </AuthContextProvider>  

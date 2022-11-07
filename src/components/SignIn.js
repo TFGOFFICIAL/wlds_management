@@ -16,7 +16,7 @@ export default function SignIn() {
     setError('');
     try {
         await signIn(email,password);
-        navigate('/dashboard')
+        navigate('/dashboard/contact')
     } catch (e) {
         setError('User not found with this email/password!');
         setFormKey(formKey + 1);
