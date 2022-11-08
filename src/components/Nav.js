@@ -11,6 +11,8 @@ const navigation = [
   { name: 'EN COURS', href: '/dashboard/encours', current: false },
   { name: 'TRAITÉ', href: '/dashboard/traite', current: false },
   { name: 'NEWSLETTER', href: '/newsletter', current: false },
+  /*{ name: 'ADD TEMPLATES', href: '/addtemplates', current: false },*/
+  { name: 'ADD VIDEOS', href: '/addvideos', current: false },
 ]
 
 function classNames(...classes) {
