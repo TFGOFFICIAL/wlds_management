@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebase'
+import { db, storage } from '../firebase'
 import { collection, query, onSnapshot, addDoc, doc, deleteDoc } from 'firebase/firestore'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import Nav from './Nav'
 
 export default function AddVideo() {
-    const [templates, setTemplates] = useState([]);
+    const [videos, setTemplates] = useState([]);
     const [formKey, setFormkey] = useState(0);
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [description, setDescription] = useState("");
     const [youtube, setYoutube] = useState("");
-    const [github, setGithub] = useState("")
-    const [imageLink, setImageLink] = useState("");
+    const [github, setGithub] = useState("");
+    const [pp, setPp] = useState(null);
+    const [ppName, setPpName] = useState("");
+    const [ppURL, setPpUrl] = useState("");
 
     const [error, setError] = useState("");
     const [showError, setShowError] = useState(false);
@@ -22,8 +25,31 @@ export default function AddVideo() {
         setDescription("");
         setYoutube("");
         setGithub("");
-        setImageLink("");
+        setPp(null);
+        setPpName("");
+        setPpUrl("");
         setFormkey(formKey + 1);
+    }
+
+    const handlePpChange = (e) => {
+        if(e.target.files[0]) {
+          setPp(e.target.files[0]);
+          setPpName(e.target.files[0].name);
+        }
+    }
+    
+    const handlePpValidate = () => {
+        const imgRef = ref(storage, `videos/${ppName}`);
+        uploadBytes(imgRef, pp)
+            .then(() => {
+            getDownloadURL(imgRef)
+            .then((l) => {
+                setPpUrl(l);
+            })
+            .catch((err) => {});
+            setPp(null);
+            })
+            .catch((er) => {});
     }
 
     const handleDelete = async (id) => {
@@ -79,11 +105,28 @@ export default function AddVideo() {
             <div className='w-full title text-2xl'>YouTube Link:</div>
             <input type='text' onChange={(e) => {setYoutube(e.target.value);}} className='w-full p-2 border border-black rounded-xl' placeholder='https://www.youtube.com/watch?v=I2UBjN5ER4s ...' />
             <div className='w-full title text-2xl'>GitHub Link:</div>
-            <input type='text' onChange={(e) => {setGithub(e.target.value);}} className='w-full p-2 border border-black rounded-xl' placeholder='https://github.com/briancodex/react-website-v1 ...' />
-            <div className='w-full title text-2xl'>Image Link: <div className='font-normal text-lg'>(Don't forget to put the image on the DB first)</div></div>
-            <input type='text' onChange={(e) => {setImageLink(e.target.value);}} className='w-full p-2 border border-black rounded-xl' placeholder='https://firebasestorage.googleapis.com/v0/b/wlds-4bc94.appspot.com/o/templates%2Ftest.jpg?alt=media&token=4360cb0f-4d84-48f1-a0e3-6f35a0681a4e ...' />
+            <input type='text' onChange={(e) => {setGithub(e.target.value);}} className='w-full p-2 border border-black rounded-xl' placeholder='https://github.com/briancodex/react-website-v1 ...' />            
+            <div className='w-full title text-2xl'>Video Picture:</div>
+            <div className='flex flex-row w-full gap-10 justify-start'>
+              {
+                ppURL ? <img src={ppURL} alt='' className='w-60 rounded-md' /> : null
+              }
+              {
+                !ppURL ?
+                  <div className='flex flex-row'>
+                    <input type="file" onChange={handlePpChange} className='p-2'/>
+                    <button onClick={handlePpValidate} className=''>
+                      <svg className='fill-green-500' xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                      </svg>
+                    </button>
+                  </div>
+                :
+                  null
+              }              
+            </div>  
             <div className='w-full flex flex-row justify-end'>
-                <button onClick={() => {createVideo(title, author, description, youtube, github, imageLink);}}>
+                <button onClick={() => {createVideo(title, author, description, youtube, github, ppURL);}}>
                     <svg className='fill-green-500' xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 16 16">
                         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
                     </svg>
@@ -91,12 +134,12 @@ export default function AddVideo() {
             </div>
         </div>
         {
-            templates.map((t, i) => {
+            videos.map((t, i) => {
                 return(
                     <div key={i} className='w-[1100px] flex flex-row items-center gap-5 bg-white rounded-xl mt-10 p-10 shadow-xl'>
                         <img src={t.image} alt='' className='rounded-xl shadow-xl w-60' />
-                        <div className='flex flex-col'>
-                            <div className='flex flex-row justify-between gap-5'>
+                        <div className='flex flex-col w-full'>
+                            <div className='flex flex-row justify-between gap-5 w-full'>
                                 <div className='title text-xl my-auto'>{t.title}</div>
                                 <button onClick={() => {handleDelete(t.id);}}>
                                     <svg className='fill-red-500' xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 16 16">
